@@ -3,16 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" type="text/css" href="jquery.mobile-1.4.5.css"/>
-<script type="text/javascript" src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-<script type="text/javascript" src="jquery.mobile-1.4.5.js"></script>
-<title>ONU自动配置系统</title>
+<link rel="stylesheet" type="text/css" href="jquery.mobile-1.4.5/jquery.mobile-1.4.5.css"/>
+<script type="text/javascript" src="jquery-1.11.2.js"></script>
+<script type="text/javascript" src="jquery.mobile-1.4.5/jquery.mobile-1.4.5.js"></script>
+<title>ONU自动配置程序</title>
+<style type="text/css">
+#shadow {opacity:0.5;background:#000;text-align:center;display:none;}
+#loading {z-index:2;position:absolute;font-size:22px;margin:150px 0 0 -23px;}
+</style>
 </head>
 <body>
+
 <!--厂商选择页面 -->
 <div data-role="page" id="choicePage">
 	<div data-role="header">
-		<h1>请选择ONU厂商</h1>
+		<h1>请选择ONU厂商</h1> 
 	</div>
 	
 	<div data-role="content">			
@@ -20,15 +25,15 @@
 		<a href="#" data-role="button" data-icon="search">华为ONU搜索</a>
 	</div>
 	
-	<div data-role="footer">
+	<div data-role="footer" data-position="fixed">
     	<h4></h4>
 	</div>
 </div>	
-
 <!--ONU选择页面 -->
-<div data-role="page" id="listPage" >
+<div data-role="page" id="listPage">
 
 	<div data-role="header">
+		<a href="#" data-rel="back"	data-role="button">返回</a>
 		<h1>请选择ONU</h1>
 	</div>
 	
@@ -37,43 +42,56 @@
 		</ul>
 	</div>
 	
-	<div data-role="footer">
+	<div data-role="footer" data-position="fixed">
     	<h4></h4>
 	</div>
-
+	
 </div>
 
-<!--ONU确认页面 -->
-<div data-role="page" id="ONUinfoPage" >
 
-	<div data-role="header">
-		<h1>请选择ONU</h1>
-	</div>
-	
-	<div data-role="content">			
-		<ul data-role="listview" id="onulist" data-inset="true" data-theme="c">
-		</ul>
-	</div>
-	
-	<div data-role="footer">
-    	<h4></h4>
-	</div>
-
+<div id="shadow">
+	<span id="loading"><img src="jquery.mobile-1.4.5/images/ajax-loader.gif" /></span>
 </div>
+
 <script type="text/javascript">
-$("#zxBtn").bind("click",function(){
+
+$("#zxBtn").on("click",function(){
+	switchLoading(1);
 	$.post("ZXONUList.action", {"makername": "zte"}, function(res) {
-		var resObj = eval("("+res+")");
-		for (var id = 0;id<resObj.onuArr.length;id++)
-		{			
-			$("#onulist")
-			.append('<li><a href="ZXONUWrite.action?sn='+resObj.onuArr[id].sn+'&onuinterface='+resObj.onuArr[id].onuinterface+'&ip='+resObj.onuArr[id].ip+'&vlan='+resObj.onuArr[id].vlan+'">'+resObj.onuArr[id].sn+'</a></li>')
+		switchLoading(0);
+		var resObj = eval("("+res+")");		
+		for (var id = 0;id<resObj.onuArr.length;id++)	
+		{
+			if(resObj.onuArr[id].sn=="null")
+			{
+				$("#onulist").append('<li><h3>无未配置ONU</h3></li>').listview("refresh");
+				continue;
+			}
+		    $("#onulist")
+			.append('<li><a onclick="goAction($(this));" rel="ZXONUWrite.action?sn='+resObj.onuArr[id].sn+'&onuinterface='+resObj.onuArr[id].onuinterface+'&ip='+resObj.onuArr[id].ip+'&vlan='+resObj.onuArr[id].vlan+'">'+resObj.onuArr[id].sn+'</a></li>')
 			.listview("refresh");
-		}		
+		}
 	});	
-	$.mobile.changePage("#listPage");	
+	$.mobile.changePage("#listPage");
 });
 
+function switchLoading(flag) {
+	if (flag == 1) {
+		$("#shadow").css({"width":$(document).width(),"height":$(document).height()});
+		$("#shadow").show();
+	} else {
+		$("#shadow").hide();
+	}
+}
+
+function goAction(obj) {
+	if (confirm("确认要配置这台ONU吗?")) {
+		window.location = obj.attr("rel");
+		return false;
+	} else {
+		return false;
+	}
+}
 </script>
 
 </body>

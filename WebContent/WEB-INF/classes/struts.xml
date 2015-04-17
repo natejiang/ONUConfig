@@ -18,6 +18,10 @@
 			<result name="success">/welcome.jsp</result>
 		</action>
 		
-			
+		<action name="login" class="actions.loginAction">
+			<result name="input">/login.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="success">/index.html</result>
+		</action>	
 	</package>
 </struts>

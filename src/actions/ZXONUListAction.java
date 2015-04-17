@@ -14,12 +14,13 @@ import com.opensymphony.xwork2.Action;
 
 
 
+
 public class ZXONUListAction 
 {
 	private String makername;       //厂商名称
 	private ArrayList<HashMap<String, String>> onuArr = new ArrayList<HashMap<String,String>>();	
 	public String execute() throws Exception
-	{		 
+	{	
 		FileInputStream fr = new FileInputStream("d:/zte_server_list.txt");    //读取OLT列表
     	InputStreamReader reader = new InputStreamReader(fr);
     	BufferedReader br = new BufferedReader(reader);
@@ -32,13 +33,13 @@ public class ZXONUListAction
     		String[] serverArr = buffer.split(":");   		 
     		String[] vlanArr = serverArr[1].split(",");
     		String ip = serverArr[0];
-   		 
+   		   
     		TelnetOperator to = new TelnetOperator();
     		to.initParam("d:/zte_info.txt");
     	    to.setIp(ip);
     		to.login();    		
     		String resultStr = to.sendCommand("show gpon onu uncfg","#");
-
+   
     		Pattern p1 = Pattern.compile("\\d/\\d/\\d");                        //正则表达式匹配interface
         	Matcher m1 = p1.matcher(resultStr);
         	Pattern p2 = Pattern.compile("ZTE\\w{9}");                          //正则表达式匹配ONT序列号

@@ -12,17 +12,17 @@ import com.opensymphony.xwork2.ActionSupport;
 public class ZXONUWriteAction extends ActionSupport
 {
 	private static final long serialVersionUID = -7229625851141927418L;
-	String ontinterface;
+	String onuinterface;
 	String sn;
 	String ip;
 	String vlan;
 	
-	public String getOntinterface() {
-		return ontinterface;
+	public String getOnuinterface() {
+		return onuinterface;
 	}
 
-	public void setOntinterface(String ontinterface) {
-		this.ontinterface = ontinterface;
+	public void setOnuinterface(String onuinterface) {
+		this.onuinterface = onuinterface;
 	}
 
 	public String getSn() {
@@ -51,14 +51,14 @@ public class ZXONUWriteAction extends ActionSupport
 
 	public String execute() throws Exception
 	{
-		System.out.println("ip="+ ip + ";sn=" + sn + ";vlan=" + vlan + ";interface=" + ontinterface);
+		System.out.println("ip="+ ip + ";sn=" + sn + ";vlan=" + vlan + ";interface=" + onuinterface);
 		TelnetOperator to = new TelnetOperator();
 		to.initParam("d:/zte_info.txt");
 		to.setIp(ip);
 		to.login();
 		to.sendCommand("configure terminal","#");
 		int id;
-		String resultStr =  to.sendCommand("show running-config interface gpon-olt_"+ ontinterface,"--More--"); 
+		String resultStr =  to.sendCommand("show running-config interface gpon-olt_"+ onuinterface,"--More--"); 
 		StringBuffer resultStrb = new StringBuffer();
 	    resultStrb.append(resultStr);
 	    while(resultStr.endsWith("--More--"))     //嵌套递归方法解决分屏问题
@@ -78,7 +78,7 @@ public class ZXONUWriteAction extends ActionSupport
     	String buffer;
     	while ((buffer = br.readLine()) != null)
     	{
-    		String bufferAfter = buffer.replaceAll("%interface%", ontinterface).replaceAll("%sn%", sn).replaceAll("%id%", Integer.toString(id+1)).replaceAll("%vlan%", vlan);
+    		String bufferAfter = buffer.replaceAll("%interface%", onuinterface).replaceAll("%sn%", sn).replaceAll("%id%", Integer.toString(id+1)).replaceAll("%vlan%", vlan);
     		System.out.println(bufferAfter);
     		to.sendCommand(bufferAfter,"#");
     	}   	

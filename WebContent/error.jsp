@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>ONU自动配置程序</title>
+<title>登陆失败</title>
 </head>
 <body>
-<h1>ONU配置成功！</h1>
+<h1>用户名或密码错误，请重新登陆。</h1>
 </body>
 </html>
