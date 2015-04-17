@@ -1,6 +1,5 @@
 package actions;
 
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class loginAction extends ActionSupport
@@ -35,10 +34,11 @@ public class loginAction extends ActionSupport
 
 	public String execute() throws Exception
 	{
-		if(getUsername().equals("jiangnan")
-				&& getPassword().equals("cttbj10050"))
+		String usernameArr = "jiangnan cttbjxq cttbj";
+		String passwordArr = "cttbj10050 51807006 cttbjxq";
+		if(usernameArr.contains(getUsername())
+				&& passwordArr.contains(getPassword()))
 		{
-			ActionContext.getContext().getSession().put("username",getUsername());
 			return SUCCESS;
 		}	
 		else

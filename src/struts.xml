@@ -13,15 +13,13 @@
 		</action>	
 		
 		<action name="ZXONUWrite" class="actions.ZXONUWriteAction">
-			<result name="input">/login.jsp</result>
-			<result name="error">/error.jsp</result>
-			<result name="success">/welcome.jsp</result>
+			<result name="error">/error.html</result>
+			<result name="success">/welcome.html</result>
 		</action>
 		
 		<action name="login" class="actions.loginAction">
-			<result name="input">/login.jsp</result>
-			<result name="error">/error.jsp</result>
-			<result name="success">/index.html</result>
+			<result name="error">/jsp/error.html</result>
+			<result name="success">/jsp/index.html</result>
 		</action>	
 	</package>
 </struts>
