@@ -37,7 +37,8 @@
 		<h1>请选择ONU</h1>
 	</div>
 	
-	<div data-role="content">			
+	<div data-role="content">	
+		<div id="noONU"></div>
 		<ul data-role="listview" id="onulist" data-inset="true" data-theme="c">
 		</ul>
 	</div>
@@ -57,6 +58,7 @@
 
 $("#zxBtn").on("click",function(){
 	switchLoading(1);
+	$("#noONU").html("");
 	$.post("ZXONUList.action", {"makername": "zte"}, function(res) {
 		switchLoading(0);
 		var resObj = eval("("+res+")");		
@@ -64,7 +66,7 @@ $("#zxBtn").on("click",function(){
 		{
 			if(resObj.onuArr[id].sn=="null")
 			{
-				$("#onulist").append('<li><h3>无未配置ONU</h3></li>').listview("refresh");
+				$("#noONU").html('<h3>无未配置ONU</h3>');
 				continue;
 			}
 		    $("#onulist")

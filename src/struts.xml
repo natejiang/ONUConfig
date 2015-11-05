@@ -13,8 +13,8 @@
 		</action>	
 		
 		<action name="ZXONUWrite" class="actions.ZXONUWriteAction">
-			<result name="error">/error.html</result>
-			<result name="success">/welcome.html</result>
+			<result name="error">/jsp/error.html</result>
+			<result name="success">/jsp/welcome.html</result>
 		</action>
 		
 		<action name="login" class="actions.loginAction">

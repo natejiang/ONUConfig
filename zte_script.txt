@@ -1,0 +1,30 @@
+interface gpon-olt_%interface%
+onu %id% type ZTE-F601 sn %sn%
+exit
+ 
+interface gpon-onu_%interface%:%id%
+  sn-bind enable
+  vport-mode gemport def-map-type 1:1
+  tcont 1 name internet profile F601-internet10M
+  tcont 1 gap mode2
+  tcont 3 name OAM profile F601-OAM
+  tcont 3 gap mode2
+  gemport 1 name interne unicast tcont 1 dir both queue 1
+  gemport 1 traffic-limit upstream F601-internet-up10M downstream F601-internet-down20M
+  switchport mode hybrid vport 1
+  service-port 1 vport 1 user-vlan %vlan% vlan %vlan% 
+exit
+ 
+pon-onu-mng gpon-onu_%interface%:%id%
+  flow 3 switch switch_0/1
+  flow mode 1 tag-filter vid-filter untag-filter discard
+  flow mode 3 tag-filter vid-filter untag-filter discard
+  flow 1 priority 3 vid %vlan%
+  flow 3 priority 7 vid 1270
+  gemport 1 flow 1
+  switchport-bind switch_0/1 iphost 1
+  vlan-filter-mode ethuni eth_0/1 tag-filter prio-vid-filter untag-filter transparent
+  vlan-filter ethuni eth_0/1 priority 3 vid %vlan%
+  onu-vlan ethuni eth_0/1 up-mode add up-prio 3 up-vid %vlan% down-mode untag
+  vlan-filter-mode iphost 1 tag-filter prio-vid-filter untag-filter discard
+exit

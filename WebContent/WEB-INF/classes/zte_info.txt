@@ -1,0 +1,7 @@
+ip=172.31.18.14
+port=23
+username=zte
+password=zte
+prompt=#
+
+
