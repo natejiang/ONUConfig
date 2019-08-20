@@ -34,8 +34,8 @@ public class loginAction extends ActionSupport
 
 	public String execute() throws Exception
 	{
-		String usernameArr = "jiangnan cttbjxq cttbj";
-		String passwordArr = "cttbj10050 51807006 cttbjxq";
+		String usernameArr = "";
+		String passwordArr = "";
 		if(usernameArr.contains(getUsername())
 				&& passwordArr.contains(getPassword()))
 		{
